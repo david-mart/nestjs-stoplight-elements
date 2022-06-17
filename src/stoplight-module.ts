@@ -1,10 +1,29 @@
-import {HttpServer, INestApplication} from '@nestjs/common';
+import {INestApplication} from '@nestjs/common';
 import {OpenAPIObject} from '@nestjs/swagger';
 import {StoplightElementsOptions} from './interfaces/elements-options.interface';
 import {Request, Response} from 'express';
-import {NestExpressApplication} from '@nestjs/platform-express';
 import * as handlebars from 'express-handlebars';
-import {join, resolve} from 'path';
+import {join} from 'path';
+
+const prependObjectIds = (d: OpenAPIObject): OpenAPIObject => {
+  const newD = d;
+  Object.keys(d.paths).forEach(key => {
+    Object.keys(newD.paths[key]).forEach(k => {
+      if (
+        k === 'get' ||
+        k === 'post' ||
+        k === 'patch' ||
+        k === 'delete' ||
+        k === 'put'
+      ) {
+        const a = {summary: '', operationId: "'"};
+        (newD.paths[key][k] || a).summary = newD.paths[key][k]?.operationId;
+        (newD.paths[key][k] || a).operationId = `${key}/${k}`;
+      }
+    });
+  });
+  return newD;
+};
 
 export class StoplightElementsModule {
   /**
@@ -23,8 +42,6 @@ export class StoplightElementsModule {
    * @param path path to mount the Stoplight frontend @example '/api'
    */
   async start(path = '/') {
-    const httpAdapter: HttpServer = this.app.getHttpAdapter();
-
     return await this.setup(path);
   }
 
@@ -36,14 +53,15 @@ export class StoplightElementsModule {
     const httpAdapter = this.app.getHttpAdapter();
     const hbs = handlebars.create({
       helpers: {
-        toJSON: function (object: any) {
+        toJSON: function (object: Record<string, unknown>) {
           return JSON.stringify(object);
         },
       },
     });
     const renderData = {
       data: {
-        document: JSON.stringify(this.document),
+        ...this.options,
+        document: JSON.stringify(prependObjectIds(this.document)),
       },
     };
     // this is our handlebars file path
@@ -58,7 +76,6 @@ export class StoplightElementsModule {
     // // get handlebars rendered HTML
     const stoplightHTML = await hbs.render(stoplightFilePath, renderData);
     // // Serve stoplight Frontend
-    console.log(path);
     httpAdapter.get(path, async (req: Request, res: Response) => {
       const sendPage = () => {
         res.setHeader(

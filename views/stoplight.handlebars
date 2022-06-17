@@ -19,7 +19,12 @@
 
     <elements-api
       apiDescriptionDocument='{{data.document}}'
-      router='hash'
+      {{#if data.router}}router='{{data.router}}'{{/if}}
+      {{#if data.layout}}layout='{{data.layout}}'{{/if}}
+      {{#if data.hideInternal}}basePath='{{data.hideTryIt}}'{{/if}}
+      {{#if data.hideTryIt}}hideTryIt='{{data.hideTryIt}}'{{/if}}
+      {{#if data.tryItCorsProxy}}tryItCorsProxy='{{data.tryItCorsProxy}}'{{/if}}
+      {{#if data.logo}}logo='{{data.logo}}'{{/if}}
     ></elements-api>
 
   </body>

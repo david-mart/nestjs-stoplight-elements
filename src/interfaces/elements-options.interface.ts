@@ -1,9 +1,4 @@
 export interface StoplightElementsOptions {
-  /** OpenAPI document URL, supporting http://, https://, and documents containing $ref to other http(s) documents. */
-  apiDescriptionUrl?: string;
-
-  /** OpenAPI document, provided as YAML string, JSON string or JavaScript object.*/
-  apiDescriptionDocument?: string;
   /** Helps when using router: 'history' but docs are in a subdirectory like https://example.com/docs/api. */
   basePath?: string;
   /** Pass "true" to filter out any content which has been marked as internal with x - internal. */
@@ -21,8 +16,8 @@ export interface StoplightElementsOptions {
   logo?: string;
   /**
    * Determines how navigation should work:
-   * `history` - (default) uses the HTML5 history API to keep the UI in sync with the URL.
-   * `hash` - uses the hash portion of the URL (i.e. window.location.hash) to keep the UI in sync with the URL.
+   * `hash` - (default) uses the hash portion of the URL (i.e. window.location.hash) to keep the UI in sync with the URL.
+   * `history` -  uses the HTML5 history API to keep the UI in sync with the URL.
    * `memory` - keeps the history of your "URL" in memory (does not read or write to the address bar).
    * `static` - renders using the StaticRouter which can help rendering pages on the server.
    */
