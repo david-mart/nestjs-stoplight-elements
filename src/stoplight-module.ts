@@ -32,7 +32,7 @@ export class StoplightElementsModule {
    * @param document - Swagger Document object
    */
   constructor(
-    private app: INestApplication,
+    private app: Omit<INestApplication, 'enableVersioning'>,
     private document: OpenAPIObject,
     private options: StoplightElementsOptions = {}
   ) {}
