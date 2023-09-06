@@ -3,8 +3,12 @@ export interface StoplightElementsOptions {
   basePath?: string;
   /** Pass "true" to filter out any content which has been marked as internal with x - internal. */
   hideInternal?: boolean;
-  /** Pass true to hide the "Try It" panel(the interactive API console).*/
+  /** Pass true to hide the ["Try It" feature](https://docs.stoplight.io/docs/platform/ZG9jOjM2OTM3Mjky-try-it) */
   hideTryIt?: boolean;
+  /** Pass true to hide the schemas in the Table of Contents, when using the sidebar layout. */
+  hideSchemas?: boolean;
+  /** Pass true to hide the Export button on overview section of the documentation. */
+  hideExport?: boolean;
   /** Pass the URL of a CORS proxy used to send requests to TryIt.The provided url is prepended to the URL of an actual request. */
   tryItCorsProxy?: string;
   /** There are two layouts for Elements:
